@@ -24,6 +24,10 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+    def display_genre(self):
+        return ', '.join(genre.name for genre in self.genre.all()[:3])
+
+    display_genre.short_description = 'Genre'
 
 class Genre(models.Model):
     """Model representing a Genre"""
@@ -80,9 +84,10 @@ class BookInstance(models.Model):
     """Model representing an instance of a Book"""
 
     # Fields
-    unique_id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this Book Instance')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this Book Instance')
     due_back = models.DateField('Return on', null=True, blank=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, null=False)
+    imprint = models.CharField(max_length=200)
 
     MAINTENANCE = 'm'
     ON_LOAN = 'o'
@@ -109,3 +114,4 @@ class BookInstance(models.Model):
 
     def __str__(self):
         return f'{self.id} ({self.book.title})'
+
