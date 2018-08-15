@@ -4,3 +4,5 @@ __pycache/*
 *.pyc
 
 *.sqlite3
+
+secret*
