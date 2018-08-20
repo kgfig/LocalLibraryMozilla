@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 import uuid
 
 class Book(models.Model):
@@ -40,6 +41,7 @@ class Genre(models.Model):
         ordering = ['name']
 
     # Methods
+
     def __str__(self):
         return self.name
 

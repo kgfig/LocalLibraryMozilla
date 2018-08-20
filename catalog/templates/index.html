@@ -1,0 +1,27 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}
+	Local Library Home Page
+{% endblock %}
+
+{% block content %}
+	<h1>Local Libary Home</h1>
+	<p>Welcome!</p>
+	<h2>Dynamic content</h2>
+	<p>The library has the following record counts:</p>
+	<ul>
+		<li><strong>Books:</strong>{{ num_books }}</li>
+		<li><strong>Copies:</strong>{{ num_instances }}</li>
+		<li><strong>Copies available:</strong>{{ num_instances_available }}</li>
+		<li><strong>Authors:</strong>{{ num_authors }}</li>
+	</ul
+	
+	<h2>Genres</h2>
+	{% for genre in genre_list %}
+	<ul>
+		<li>
+			<a href='{% url 'book-list-by-genre' genre.id %}'>{{ genre.name }}</a>
+		</li>
+	</ul>
+	{% endfor %}
+{% endblock %}

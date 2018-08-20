@@ -1,0 +1,17 @@
+{% extends 'base_generic.html' %}
+
+
+{% block content %}
+	<h2>Authors</h2>
+	{% if author_list %}
+		<ul>
+			{% for author in author_list %}
+			<li>
+				<a href="{% url 'author-detail' author.id %}">{{ author.first_name }} {{ author.last_name }}</a><span>has {{ author.book_set.count }} books</span>
+			</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>There aren't any authors listed in the library. :(<p>
+	{% endif %}
+{% endblock %}

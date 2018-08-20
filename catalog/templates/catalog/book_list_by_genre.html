@@ -1,0 +1,17 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+	{% if book_list %}
+		<h2>Books in the {{ genre.name }} genre: </h2>
+		<ul>
+			{% for book in books_in_genre_list %}
+			<li>
+				<a href="{{ book.get_absolute_url }}">{{ book.title }}</a> by 
+				<a href="{% url 'author-detail' book.author.id %}">{{ book.author }}</a>
+			</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>No books found in the {{ genre.name }} genre.</p>
+	{% endif %}
+{% endblock %}
