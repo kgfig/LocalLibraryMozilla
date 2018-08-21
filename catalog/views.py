@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views import generic
-from django.shortcuts import get_object_or_404
 
 from .models import Author, Book, BookInstance, Genre
 
@@ -108,3 +109,29 @@ class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return BookInstance.objects.filter(borrower=self.request.user).filter(status__iexact=BookInstance.ON_LOAN).order_by('due_back')
+
+def bookinstance_return_view(request, bookinstance_id):
+    bookinstance_item = get_object_or_404(BookInstance, id=bookinstance_id)
+    bookinstance_item.borrower = None
+    bookinstance_item.status = BookInstance.AVAILABLE
+    bookinstance_item.due_back = None
+    bookinstance_item.save()
+
+    response = HttpResponse("Marked as returned!")
+    return response
+
+class LoanedBookListView(PermissionRequiredMixin, generic.ListView):
+    model = BookInstance
+    template_name = 'catalog/loaned_book_list.html'
+    context_object_name = 'loaned_book_list'
+    permission_required = ('catalog.can_mark_returned')
+
+    def get_queryset(self):
+        self.bookinstance_list = BookInstance.objects.filter(status__iexact=BookInstance.ON_LOAN)
+        return self.bookinstance_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['loaned_book_list'] = self.bookinstance_list
+        return context
+

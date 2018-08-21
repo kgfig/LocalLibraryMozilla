@@ -30,7 +30,13 @@
 			<hr>
 			<p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm'%} text-danger{% else %}text-warning{% endif %}">{{ copy.get_status_display }}</p>
 			{% if copy.status != 'a' %}
-				<p><strong>Due to be returned on</strong>{{ copy.due_back }}</p>
+			<p>
+				<strong>Due to be returned on</strong>
+				({{ copy.due_back }})
+				{% if perms.catalog.can_mark_returned %}
+				<button class="btn-return btn btn-default" data-target="{{ copy.id }}">Set as returned</button>
+				{% endif %}
+			</p>
 			{% endif %}
 			<p><strong>Imprint:</strong>{{ copy.imprint }}</p>
 			<p class="text-muted"><strong>Id:</strong>{{ copy.id }}</p>

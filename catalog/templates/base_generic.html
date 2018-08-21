@@ -30,6 +30,9 @@
 					{% if user.is_authenticated %}
 						<li>Hi, {{ user.get_username }}</li>
 						<li><a href="{% url 'loaned-books-by-user' %}">My Borrowed Books</li>
+						{% if perms.catalog.can_mark_returned %}
+						<li><a href="{% url 'loaned-books' %}">View All Loaned Books</a>
+						{% endif %}
 						<li><a href="{% url 'logout' %}?next={{ request.path }}">Logout</a></li>
 					{% else %}
 					<li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
@@ -61,5 +64,6 @@
 			</div>
 		</div>
 	</div>
+	<script src="{% static 'js/app.js' %}"></script>
 </body>
 </html>

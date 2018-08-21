@@ -1,0 +1,23 @@
+{% extends 'base_generic.html' %}
+
+
+{% block content %}
+<h1>All Borrowed Books</h1>
+{% if loaned_book_list %}
+	<ul>
+		{% for bookinstance_item in loaned_book_list %}
+		<li><p>
+			{{ bookinstance_item.book.title }}
+			<span class="{% if bookinstance_item.is_overdue %}text-danger{% endif %}">
+				({{ bookinstance_item.due_back }})
+			</span>
+			- {{ bookinstance_item.borrower }}
+			<button class="btn-return btn btn-default"
+				data-target="{{ bookinstance_item.id }}">Set as returned</button>
+			</p></li>
+		{% endfor %}
+	</ul>
+{% else %}
+	<p>No loaned books.</p>
+{% endif %}
+{% endblock %}
