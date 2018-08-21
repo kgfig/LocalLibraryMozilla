@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import generic
 from django.shortcuts import get_object_or_404
@@ -72,6 +74,7 @@ class BookListByGenreView(generic.ListView):
         self.book_list = Book.objects.filter(genre__id=genre_id)
         return self.book_list
 
+@login_required
 def book_detail_view(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     context = {
@@ -96,3 +99,12 @@ class AuthorDetailView(generic.DetailView):
     context_object_name = 'author'
     template_name = 'catalog/author_detail.html'
     pk_url_kwarg = 'author_id'
+
+class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
+    """Generic class-based view listing book instances on loan to current user"""
+    model = BookInstance
+    template_name = 'catalog/bookinstance_list_borrowed_user.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return BookInstance.objects.filter(borrower=self.request.user).filter(status__iexact=BookInstance.ON_LOAN).order_by('due_back')
