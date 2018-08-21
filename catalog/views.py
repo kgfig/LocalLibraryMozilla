@@ -7,7 +7,7 @@ from django.views import generic
 
 import datetime
 
-from .forms import RenewBookForm
+from .forms import RenewBookModelForm
 from .models import Author, Book, BookInstance, Genre
 
 def index(request):
@@ -146,13 +146,13 @@ def bookinstance_renew_view(request, bookinstance_id):
     if request.method == 'POST':
 
         # Create a form instance and populate it with data from the request
-        renew_book_form = RenewBookForm(request.POST)
+        renew_book_form = RenewBookModelForm(request.POST)
         valid = renew_book_form.is_valid()
 
         # Validate
         if renew_book_form.is_valid():
             # Process/save validated data
-            bookinstance_item.due_back = renew_book_form.cleaned_data['renewal_date']
+            bookinstance_item.due_back = renew_book_form.cleaned_data['due_back']
             bookinstance_item.save()
 
             # Redirect
@@ -161,9 +161,9 @@ def bookinstance_renew_view(request, bookinstance_id):
     else:
         proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
         initial_data = {
-                'renewal_date': proposed_renewal_date,
+                'due_back': proposed_renewal_date,
         }
-        renew_book_form = RenewBookForm(initial=initial_data)
+        renew_book_form = RenewBookModelForm(initial=initial_data)
 
     context = {
             'form': renew_book_form,
