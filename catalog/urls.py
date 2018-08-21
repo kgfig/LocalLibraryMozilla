@@ -13,5 +13,6 @@ urlpatterns = [
     path('libuser/books/', views.LoanedBooksByUserListView.as_view(), name='loaned-books-by-user'),
     path('books/loaned/', views.LoanedBookListView.as_view(), name='loaned-books'),
     path('bookinstance/<uuid:bookinstance_id>/return/', views.bookinstance_return_view, name='bookinstance-return'),
+    path('bookinstance/<uuid:bookinstance_id>/renew/', views.bookinstance_renew_view, name='bookinstance-renew'),
     # re_path(r'^genre/(?P<genre_id>\d+)/$', views.BookListByGenreView.as_view(), name='book-list-by-genre'),
 ]

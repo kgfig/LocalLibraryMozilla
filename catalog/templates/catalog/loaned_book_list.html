@@ -12,8 +12,15 @@
 				({{ bookinstance_item.due_back }})
 			</span>
 			- {{ bookinstance_item.borrower }}
-			<button class="btn-return btn btn-default"
+
+			{% if perms.catalog.can_mark_returned %}
+				<button class="btn-return btn btn-default"
 				data-target="{{ bookinstance_item.id }}">Set as returned</button>
+			{% endif %}
+
+			{% if perms.catalog.can_renew %}
+				<a href="{% url 'bookinstance-renew' bookinstance_item.id %}">Renew</a>
+			{% endif %}
 			</p></li>
 		{% endfor %}
 	</ul>

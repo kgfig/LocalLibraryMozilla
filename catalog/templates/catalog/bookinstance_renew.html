@@ -1,0 +1,28 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+	<h1>Renew: {{ bookinstance_item.book.title }}</h1>
+	<p>Borrower: {{ bookinstance_item.borrower.last_name }}, {{ bookinstance_item.borrower.first_name }}</h1></p>
+	<p class="{%if bookinstance_item.is_overdue %}text-danger{% endif %}">Due date: {{ bookinstance_item.due_back }}</p>
+
+	<form method="POST" action="{% url 'bookinstance-renew' bookinstance_item.id %}">
+		{% csrf_token %}
+		<table>
+			<tr>
+				<td></td>
+				<td>{{ form.renewal_date.errors }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.renewal_date.label_tag }}</td>
+				<td>{{ form.renewal_date }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>{{ form.renewal_date.help_text }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Submit"></td>
+			</tr>
+	</form>
+{% endblock %}

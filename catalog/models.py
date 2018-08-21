@@ -119,6 +119,7 @@ class BookInstance(models.Model):
         ordering = ['due_back', 'book']
         permissions = (
                 ('can_mark_returned', 'Set book as returned'),
+                ('can_renew', 'Renew book due date'),
         )
 
     def __str__(self):
