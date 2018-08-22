@@ -19,6 +19,9 @@ class Book(models.Model):
     # Metadata
     class Meta:
         ordering = ['title']
+        permissions = (
+            ('can_edit_books', 'Create, update or delete books'),        
+        )
 
     # Methods
     def get_absolute_url(self):

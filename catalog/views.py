@@ -190,3 +190,24 @@ class AuthorDeleteView(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('author-list')
     template_name_suffix = '_delete_confirmation'
     permission_required = 'catalog.can_edit_authors'
+
+class BookCreateView(PermissionRequiredMixin, CreateView):
+    model = Book
+    permission_required = 'catalog.can_edit_books'
+    fields = '__all__'
+    template_name_suffix = '_create_form'
+
+class BookUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Book
+    permission_required = 'catalog.can_edit_books'
+    fields = '__all__'
+    exclude = ['id']
+    template_name_suffix = '_update_form'
+    pk_url_kwarg = 'book_id'
+
+class BookDeleteView(PermissionRequiredMixin, DeleteView):
+    model = Book
+    success_url = reverse_lazy('book-list')
+    template_name_suffix = '_confirm_delete'
+    permission_required = 'catalog.can_edit_books'
+    pk_url_kwarg = 'book_id'

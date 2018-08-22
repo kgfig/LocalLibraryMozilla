@@ -1,0 +1,15 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+	<h2>Delete Book</h2>
+	{% if perms.catalog.can_edit_books %}
+	<p>Are you sure you want to delete {{ book.title }}?</p>
+	<div>
+		<form method="POST" action="">
+			{% csrf_token %}
+			<input type="submit" class="btn btn-danger" value="Yes, delete this book" style="margin-right:20px;">
+			<a href="{% url 'book-detail' book.id %}">No, take me back</a>
+		</form>
+	</div>
+	{% endif %}
+{% endblock %}
