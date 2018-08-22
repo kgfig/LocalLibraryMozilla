@@ -76,6 +76,9 @@ class Author(models.Model):
     # Meta
     class Meta:
         ordering = ['last_name', 'first_name']
+        permissions = (
+                ('can_edit_authors', 'Create, edit or delete authors'),
+        )
 
     # Methods
     def get_absolute_url(self):

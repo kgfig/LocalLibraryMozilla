@@ -2,13 +2,14 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 import datetime
 
 from .forms import RenewBookModelForm
-from .models import Author, Book, BookInstance, Genre
+from catalog.models import Author, Book, BookInstance, Genre
 
 def index(request):
     """View function for home page of our catalog app"""
@@ -171,3 +172,21 @@ def bookinstance_renew_view(request, bookinstance_id):
     }
 
     return render(request, 'catalog/bookinstance_renew.html', context)
+
+
+class AuthorCreateView(PermissionRequiredMixin, CreateView):
+    model = Author
+    fields = '__all__'
+    permission_required = 'catalog.can_edit_authors'
+
+class AuthorUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Author
+    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
+    permission_required = 'catalog.can_edit_authors'
+    template_name_suffix = '_update_form'
+
+class AuthorDeleteView(PermissionRequiredMixin, DeleteView):
+    model = Author
+    success_url = reverse_lazy('author-list')
+    template_name_suffix = '_delete_confirmation'
+    permission_required = 'catalog.can_edit_authors'
